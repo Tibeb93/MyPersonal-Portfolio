@@ -149,10 +149,9 @@ export default function Hero() {
           className="text-slate-400 text-sm sm:text-base lg:text-lg max-w-xl lg:max-w-2xl
             mx-auto leading-relaxed mb-10 px-2"
         >
-          Computer Science student from{' '}
-          <span className="text-orange-400 font-medium">Ethiopia</span> crafting modern,
-          performant web experiences. Passionate about clean code, beautiful UIs, and
-          scalable backend systems.
+         Computer Science student and Full Stack Developer from{' '}
+          <span className="text-orange-400 font-medium">Ethiopia</span>  building modern web
+experiences that combine performance, scalability, and clean, user-centered design.
         </motion.p>
 
         {/* CTA buttons */}
