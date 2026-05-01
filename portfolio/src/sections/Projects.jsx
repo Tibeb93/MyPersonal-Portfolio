@@ -10,7 +10,7 @@ const PROJECTS = [
     desc: 'Full-featured online store with product management, cart, payment integration, and admin dashboard. Built for performance and scalability.',
     gradient: 'from-violet-900/60 via-purple-900/40 to-[#0F1525]',
     tags: ['React','Node.js','MongoDB','Stripe','JWT'],
-    github: 'https://github.com/Tibeb93/Ecommerce', demo: 'https://example.com',
+    github: 'https://github.com/Tibeb93/Ecommerce', demo: 'https://ecommerce-frontend-xi-eight.vercel.app/',
   },
   {
     id: 2, title: 'Task Management App',
