@@ -1,0 +1,145 @@
+import { useState, useEffect } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { HiMenuAlt3, HiX } from 'react-icons/hi'
+import Button from '../components/Button'
+import useScrollSpy from '../hooks/useScrollSpy'
+
+const LINKS = [
+  { label: 'Home',     id: 'home' },
+  { label: 'About',    id: 'about' },
+  { label: 'Services', id: 'services' },
+  { label: 'Projects', id: 'projects' },
+  { label: 'Contact',  id: 'contact' },
+]
+
+function scrollTo(id) {
+  document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
+}
+
+export default function Navbar() {
+  const [open, setOpen]       = useState(false)
+  const [scrolled, setScrolled] = useState(false)
+  const active = useScrollSpy(LINKS.map(l => l.id))
+
+  useEffect(() => {
+    const fn = () => setScrolled(window.scrollY > 20)
+    window.addEventListener('scroll', fn, { passive: true })
+    return () => window.removeEventListener('scroll', fn)
+  }, [])
+
+  useEffect(() => {
+    const fn = () => { if (window.innerWidth >= 768) setOpen(false) }
+    window.addEventListener('resize', fn)
+    return () => window.removeEventListener('resize', fn)
+  }, [])
+
+  return (
+    <>
+      <motion.header
+        className={`fixed top-0 inset-x-0 z-50 transition-all duration-500
+          ${scrolled ? 'glass-dark shadow-[0_1px_0_rgba(255,255,255,0.05)]' : 'bg-transparent'}`}
+        initial={{ y: -80, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.6, ease: 'easeOut' }}
+      >
+        <nav className="container-custom flex items-center justify-between h-20">
+          {/* Logo */}
+          <motion.button
+            onClick={() => scrollTo('home')}
+            className="flex items-center gap-2.5 group"
+            whileHover={{ scale: 1.03 }}
+            aria-label="Go to top"
+          >
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-violet-600 via-pink-600 to-orange-500
+              flex items-center justify-center shadow-[0_0_20px_rgba(139,92,246,0.4)]">
+              <span className="text-white font-black text-sm">GK</span>
+            </div>
+            <span className="hidden sm:block font-bold text-white text-lg">
+              Gebre<span className="gradient-text">meskel</span>
+            </span>
+          </motion.button>
+
+          {/* Desktop links */}
+          <ul className="hidden md:flex items-center gap-1">
+            {LINKS.map(({ label, id }) => (
+              <li key={id}>
+                <button
+                  onClick={() => scrollTo(id)}
+                  className={`relative px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300
+                    ${active === id ? 'text-white' : 'text-slate-400 hover:text-white hover:bg-white/5'}`}
+                  aria-current={active === id ? 'page' : undefined}
+                >
+                  {active === id && (
+                    <motion.span layoutId="nav-pill"
+                      className="absolute inset-0 rounded-lg bg-white/8 border border-violet-500/20"
+                      transition={{ type: 'spring', stiffness: 380, damping: 30 }}
+                    />
+                  )}
+                  <span className="relative z-10">{label}</span>
+                </button>
+              </li>
+            ))}
+          </ul>
+
+          <div className="flex items-center gap-3">
+            <Button variant="primary" size="sm" className="hidden md:inline-flex"
+              onClick={() => scrollTo('contact')}>
+              Connect With Me
+            </Button>
+            <button
+              className="md:hidden p-2 rounded-lg text-slate-300 hover:text-white hover:bg-white/8 transition-colors"
+              onClick={() => setOpen(v => !v)}
+              aria-label={open ? 'Close menu' : 'Open menu'}
+              aria-expanded={open}
+            >
+              {open ? <HiX size={22} /> : <HiMenuAlt3 size={22} />}
+            </button>
+          </div>
+        </nav>
+      </motion.header>
+
+      {/* Mobile drawer */}
+      <AnimatePresence>
+        {open && (
+          <motion.div className="fixed inset-0 z-40 md:hidden"
+            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+            <div className="absolute inset-0 bg-[#0B0F19]/80 backdrop-blur-sm"
+              onClick={() => setOpen(false)} />
+            <motion.div
+              className="absolute top-0 right-0 h-full w-72 glass-dark border-l border-white/8
+                flex flex-col pt-24 pb-8 px-6"
+              initial={{ x: '100%' }} animate={{ x: 0 }} exit={{ x: '100%' }}
+              transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+            >
+              <ul className="flex flex-col gap-2">
+                {LINKS.map(({ label, id }, i) => (
+                  <motion.li key={id}
+                    initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: i * 0.07 }}>
+                    <button
+                      onClick={() => { scrollTo(id); setOpen(false) }}
+                      className={`w-full text-left flex items-center gap-3 px-4 py-3 rounded-xl text-base font-medium
+                        transition-all duration-200
+                        ${active === id
+                          ? 'text-white bg-violet-500/15 border border-violet-500/20'
+                          : 'text-slate-400 hover:text-white hover:bg-white/5'}`}
+                    >
+                      {active === id && <span className="w-1.5 h-1.5 rounded-full bg-violet-400" />}
+                      {label}
+                    </button>
+                  </motion.li>
+                ))}
+              </ul>
+              <div className="mt-auto">
+                <Button variant="primary" size="md" className="w-full justify-center"
+                  onClick={() => { scrollTo('contact'); setOpen(false) }}>
+                  Connect With Me
+                </Button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
+  )
+}
