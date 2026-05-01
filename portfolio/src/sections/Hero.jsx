@@ -132,7 +132,7 @@ export default function Hero() {
             Gebremeskel
           </span>
           <br />
-          <span className="text-white">Kiflemeskel</span>
+          <span className="text-white">Keflemeskel</span>
         </motion.h1>
 
         {/* Role pill */}
