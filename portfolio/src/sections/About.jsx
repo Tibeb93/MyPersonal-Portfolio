@@ -129,7 +129,7 @@ export default function About() {
 
             <div className="flex flex-col sm:flex-row gap-3">
               <Button variant="primary"   size="md" onClick={() => go('contact')}>Get In Touch</Button>
-              <Button variant="secondary" size="md" href="/cv.jpg" download="Gebremeskel_Kiflemeskel_CV.jpg">Download Resume</Button>
+              <Button variant="secondary" size="md" href="/Gebremeskel_Kiflemeskel_CV.pdf" download="Gebremeskel_Kiflemeskel_CV.pdf">Download Resume</Button>
             </div>
           </motion.div>
         </div>
