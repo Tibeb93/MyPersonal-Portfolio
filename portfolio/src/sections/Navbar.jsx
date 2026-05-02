@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { HiMenuAlt3, HiX } from 'react-icons/hi'
 import Button from '../components/Button'
+import ThemeToggle from '../components/ThemeToggle'
 import useScrollSpy from '../hooks/useScrollSpy'
 
 const LINKS = [
@@ -16,10 +17,11 @@ function scrollTo(id) {
   document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
 }
 
-export default function Navbar() {
-  const [open, setOpen]       = useState(false)
+export default function Navbar({ theme, toggleTheme }) {
+  const [open, setOpen]         = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const active = useScrollSpy(LINKS.map(l => l.id))
+  const isLight = theme === 'light'
 
   useEffect(() => {
     const fn = () => setScrolled(window.scrollY > 20)
@@ -37,13 +39,19 @@ export default function Navbar() {
     <>
       <motion.header
         className={`fixed top-0 inset-x-0 z-50 transition-all duration-500
-          ${scrolled ? 'glass-dark shadow-[0_1px_0_rgba(255,255,255,0.05)]' : 'bg-transparent'}`}
+          ${scrolled
+            ? isLight
+              ? 'bg-white/85 backdrop-blur-xl shadow-[0_1px_0_rgba(0,0,0,0.06)] border-b border-black/5'
+              : 'glass-dark shadow-[0_1px_0_rgba(255,255,255,0.05)]'
+            : 'bg-transparent'
+          }`}
         initial={{ y: -80, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.6, ease: 'easeOut' }}
       >
         <nav className="container-custom flex items-center justify-between h-20">
-          {/* Logo */}
+
+          {/* ── Logo ── */}
           <motion.button
             onClick={() => scrollTo('home')}
             className="flex items-center gap-2.5 group"
@@ -54,24 +62,35 @@ export default function Navbar() {
               flex items-center justify-center shadow-[0_0_20px_rgba(139,92,246,0.4)]">
               <span className="text-white font-black text-sm">GK</span>
             </div>
-            <span className="hidden sm:block font-bold text-white text-lg">
+            <span className={`hidden sm:block font-bold text-lg transition-colors duration-300
+              ${isLight ? 'text-slate-800' : 'text-white'}`}>
               Gebre<span className="gradient-text">meskel</span>
             </span>
           </motion.button>
 
-          {/* Desktop links */}
+          {/* ── Desktop nav links ── */}
           <ul className="hidden md:flex items-center gap-1">
             {LINKS.map(({ label, id }) => (
               <li key={id}>
                 <button
                   onClick={() => scrollTo(id)}
                   className={`relative px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300
-                    ${active === id ? 'text-white' : 'text-slate-400 hover:text-white hover:bg-white/5'}`}
+                    ${active === id
+                      ? isLight ? 'text-slate-900' : 'text-white'
+                      : isLight
+                        ? 'text-slate-500 hover:text-slate-900 hover:bg-black/5'
+                        : 'text-slate-400 hover:text-white hover:bg-white/5'
+                    }`}
                   aria-current={active === id ? 'page' : undefined}
                 >
                   {active === id && (
-                    <motion.span layoutId="nav-pill"
-                      className="absolute inset-0 rounded-lg bg-white/8 border border-violet-500/20"
+                    <motion.span
+                      layoutId="nav-pill"
+                      className={`absolute inset-0 rounded-lg border
+                        ${isLight
+                          ? 'bg-violet-50 border-violet-200'
+                          : 'bg-white/8 border-violet-500/20'
+                        }`}
                       transition={{ type: 'spring', stiffness: 380, damping: 30 }}
                     />
                   )}
@@ -81,13 +100,29 @@ export default function Navbar() {
             ))}
           </ul>
 
-          <div className="flex items-center gap-3">
-            <Button variant="primary" size="sm" className="hidden md:inline-flex"
-              onClick={() => scrollTo('contact')}>
+          {/* ── Right side: theme toggle + CTA + hamburger ── */}
+          <div className="flex items-center gap-2 sm:gap-3">
+
+            {/* Theme toggle — always visible */}
+            <ThemeToggle theme={theme} toggle={toggleTheme} />
+
+            {/* Connect CTA — desktop only */}
+            <Button
+              variant="primary"
+              size="sm"
+              className="hidden md:inline-flex"
+              onClick={() => scrollTo('contact')}
+            >
               Connect With Me
             </Button>
+
+            {/* Hamburger — mobile only */}
             <button
-              className="md:hidden p-2 rounded-lg text-slate-300 hover:text-white hover:bg-white/8 transition-colors"
+              className={`md:hidden p-2 rounded-lg transition-colors
+                ${isLight
+                  ? 'text-slate-600 hover:text-slate-900 hover:bg-black/5'
+                  : 'text-slate-300 hover:text-white hover:bg-white/8'
+                }`}
               onClick={() => setOpen(v => !v)}
               aria-label={open ? 'Close menu' : 'Open menu'}
               aria-expanded={open}
@@ -98,16 +133,28 @@ export default function Navbar() {
         </nav>
       </motion.header>
 
-      {/* Mobile drawer */}
+      {/* ── Mobile drawer ── */}
       <AnimatePresence>
         {open && (
-          <motion.div className="fixed inset-0 z-40 md:hidden"
-            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-            <div className="absolute inset-0 bg-[#0B0F19]/80 backdrop-blur-sm"
-              onClick={() => setOpen(false)} />
+          <motion.div
+            className="fixed inset-0 z-40 md:hidden"
+            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+          >
+            {/* Backdrop */}
+            <div
+              className={`absolute inset-0 backdrop-blur-sm
+                ${isLight ? 'bg-slate-200/70' : 'bg-[#0B0F19]/80'}`}
+              onClick={() => setOpen(false)}
+            />
+
+            {/* Drawer panel */}
             <motion.div
-              className="absolute top-0 right-0 h-full w-72 glass-dark border-l border-white/8
-                flex flex-col pt-24 pb-8 px-6"
+              className={`absolute top-0 right-0 h-full w-72 flex flex-col pt-24 pb-8 px-6
+                border-l transition-colors duration-300
+                ${isLight
+                  ? 'bg-white/95 border-black/8 shadow-xl'
+                  : 'glass-dark border-white/8'
+                }`}
               initial={{ x: '100%' }} animate={{ x: 0 }} exit={{ x: '100%' }}
               transition={{ type: 'spring', stiffness: 300, damping: 30 }}
             >
@@ -118,21 +165,43 @@ export default function Navbar() {
                     transition={{ delay: i * 0.07 }}>
                     <button
                       onClick={() => { scrollTo(id); setOpen(false) }}
-                      className={`w-full text-left flex items-center gap-3 px-4 py-3 rounded-xl text-base font-medium
-                        transition-all duration-200
+                      className={`w-full text-left flex items-center gap-3 px-4 py-3 rounded-xl
+                        text-base font-medium transition-all duration-200
                         ${active === id
-                          ? 'text-white bg-violet-500/15 border border-violet-500/20'
-                          : 'text-slate-400 hover:text-white hover:bg-white/5'}`}
+                          ? isLight
+                            ? 'text-violet-700 bg-violet-50 border border-violet-200'
+                            : 'text-white bg-violet-500/15 border border-violet-500/20'
+                          : isLight
+                            ? 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+                            : 'text-slate-400 hover:text-white hover:bg-white/5'
+                        }`}
                     >
-                      {active === id && <span className="w-1.5 h-1.5 rounded-full bg-violet-400" />}
+                      {active === id && (
+                        <span className={`w-1.5 h-1.5 rounded-full flex-shrink-0
+                          ${isLight ? 'bg-violet-500' : 'bg-violet-400'}`} />
+                      )}
                       {label}
                     </button>
                   </motion.li>
                 ))}
               </ul>
-              <div className="mt-auto">
-                <Button variant="primary" size="md" className="w-full justify-center"
-                  onClick={() => { scrollTo('contact'); setOpen(false) }}>
+
+              {/* Bottom: theme toggle row + CTA */}
+              <div className="mt-auto space-y-3">
+                {/* Theme toggle row in drawer */}
+                <div className={`flex items-center justify-between px-4 py-3 rounded-xl
+                  ${isLight ? 'bg-slate-100 border border-slate-200' : 'glass border-white/8'}`}>
+                  <span className={`text-sm font-medium
+                    ${isLight ? 'text-slate-600' : 'text-slate-400'}`}>
+                    {theme === 'dark' ? 'Dark Mode' : 'Light Mode'}
+                  </span>
+                  <ThemeToggle theme={theme} toggle={toggleTheme} />
+                </div>
+
+                <Button
+                  variant="primary" size="md" className="w-full justify-center"
+                  onClick={() => { scrollTo('contact'); setOpen(false) }}
+                >
                   Connect With Me
                 </Button>
               </div>
