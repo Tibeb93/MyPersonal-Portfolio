@@ -233,7 +233,7 @@ export default function Contact() {
                     </label>
                     <input
                       id="subject" name="subject" type="text" required
-                      placeholder="Project Inquiry / Collaboration / Hello"
+                      placeholder="gkiflemeskel@gmail.com"
                       className={inputCls}
                       disabled={state.submitting}
                     />
