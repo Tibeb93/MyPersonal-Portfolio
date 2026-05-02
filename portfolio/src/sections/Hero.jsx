@@ -88,12 +88,17 @@ export default function Hero() {
               style={{ animation: 'spin-slow 20s linear infinite' }}
             />
 
-            {/* Photo */}
+            {/* Photo — eager + high priority so it paints with first frame */}
             <div className="relative w-36 h-36 sm:w-44 sm:h-44 md:w-52 md:h-52 rounded-full overflow-hidden
               border-2 border-white/10 shadow-[0_0_40px_rgba(139,92,246,0.35)]">
               <img
                 src={profileImage}
                 alt="Gebremeskel Kiflemeskel"
+                width={208}
+                height={208}
+                loading="eager"
+                decoding="async"
+                fetchpriority="high"
                 className="w-full h-full object-cover object-top"
               />
             </div>

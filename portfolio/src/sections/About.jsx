@@ -49,6 +49,10 @@ export default function About() {
                   <img
                     src={profileImage}
                     alt="Gebremeskel Kiflemeskel"
+                    width={320}
+                    height={320}
+                    loading="lazy"
+                    decoding="async"
                     className="w-full h-full object-cover object-top"
                   />
                   {/* Gradient fade at bottom */}
