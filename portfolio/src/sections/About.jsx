@@ -86,7 +86,7 @@ export default function About() {
                 className="absolute -top-4 -left-4 glass rounded-2xl border border-white/10 px-4 py-3 text-center"
                 animate={{ y: [0, 8, 0] }}
                 transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut', delay: 2 }}>
-                <div className="text-2xl font-black gradient-text">20+</div>
+                <div className="text-2xl font-black gradient-text">3+</div>
                 <div className="text-xs text-slate-400 font-medium">Projects</div>
               </motion.div>
             </div>
