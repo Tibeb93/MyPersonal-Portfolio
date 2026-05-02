@@ -129,7 +129,16 @@ export default function About() {
 
             <div className="flex flex-col sm:flex-row gap-3">
               <Button variant="primary"   size="md" onClick={() => go('contact')}>Get In Touch</Button>
-              <Button variant="secondary" size="md" href="/Gebremeskel_Kiflemeskel_CV.pdf" download="Gebremeskel_Kiflemeskel_CV.pdf">Download Resume</Button>
+              <a
+                href="/Gebremeskel_Kiflemeskel_CV.pdf"
+                download="Gebremeskel_Kiflemeskel_CV.pdf"
+                className="inline-flex items-center gap-2 px-6 py-3 text-sm font-semibold rounded-xl
+                  bg-transparent text-white border border-violet-500/50
+                  hover:border-violet-400 hover:bg-violet-500/10
+                  transition-all duration-300 cursor-pointer"
+              >
+                Download Resume
+              </a>
             </div>
           </motion.div>
         </div>
