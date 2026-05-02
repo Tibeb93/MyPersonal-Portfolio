@@ -11,9 +11,9 @@ const NAV = [
 ]
 
 const SOCIALS = [
-  { Icon: FaGithub,   href: 'https://github.com',  label: 'GitHub' },
-  { Icon: FaTelegram, href: 'https://t.me',         label: 'Telegram' },
-  { Icon: FaLinkedin, href: 'https://linkedin.com', label: 'LinkedIn' },
+  { Icon: FaGithub,   href: 'https://github.com/Tibeb93',  label: 'GitHub' },
+  { Icon: FaTelegram, href: 'https://t.me/tibeb93',         label: 'Telegram' },
+  { Icon: FaLinkedin, href: 'https://linkedin.com',         label: 'LinkedIn' },
 ]
 
 export default function Footer() {
@@ -75,8 +75,8 @@ export default function Footer() {
             <div className="space-y-2.5 text-sm">
               <p className="text-slate-500">
                 <span className="text-slate-400">Email: </span>
-                <a href="mailto:gebremeskel@example.com"
-                  className="hover:text-violet-400 transition-colors">gebremeskel@example.com</a>
+                <a href="mailto:gkiflemeskel@gmail.com"
+                  className="hover:text-violet-400 transition-colors">gkiflemeskel@gmail.com</a>
               </p>
               <p className="text-slate-500"><span className="text-slate-400">Location: </span>Ethiopia 🇪🇹</p>
               <p className="text-slate-500">

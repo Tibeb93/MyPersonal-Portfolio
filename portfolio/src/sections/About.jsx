@@ -14,9 +14,9 @@ const HIGHLIGHTS = [
 ]
 
 const SOCIALS = [
-  { Icon: FaGithub,   href: 'https://github.com',  label: 'GitHub' },
-  { Icon: FaTelegram, href: 'https://t.me',         label: 'Telegram' },
-  { Icon: FaLinkedin, href: 'https://linkedin.com', label: 'LinkedIn' },
+  { Icon: FaGithub,   href: 'https://github.com/Tibeb93',  label: 'GitHub' },
+  { Icon: FaTelegram, href: 'https://t.me/tibeb93',         label: 'Telegram' },
+  { Icon: FaLinkedin, href: 'https://linkedin.com',         label: 'LinkedIn' },
 ]
 
 export default function About() {
