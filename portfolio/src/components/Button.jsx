@@ -16,6 +16,8 @@ export default function Button({
   onClick,
   type = 'button',
   disabled = false,
+  download,
+  ...rest
 }) {
   const base = `inline-flex items-center gap-2 font-semibold rounded-xl cursor-pointer
     focus:outline-none focus:ring-2 focus:ring-violet-500/50
@@ -49,8 +51,10 @@ export default function Button({
   if (href) {
     return (
       <motion.a href={href} className={`${base} ${styles[variant]}`} {...motion_props}
-        target={href.startsWith('http') ? '_blank' : undefined}
-        rel={href.startsWith('http') ? 'noopener noreferrer' : undefined}>
+        download={download}
+        target={download ? undefined : href.startsWith('http') ? '_blank' : undefined}
+        rel={download ? undefined : href.startsWith('http') ? 'noopener noreferrer' : undefined}
+        {...rest}>
         {inner}
       </motion.a>
     )
